@@ -20,7 +20,7 @@ else
 	echo 'kubectl already installed'
 fi
 
-# aws-iam-authenticator
+# aws-iam-authsenticator
 if ! type aws-iam-authenticator >/dev/null 2>&1; then
 	curl -o aws-iam-authenticator "https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/$(uname -s)/amd64/aws-iam-authenticator"
 	chmod +x ./aws-iam-authenticator
