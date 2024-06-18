@@ -1,4 +1,5 @@
 FROM public.ecr.aws/p9e0r1w2/test-iavt12:httpd-latest
 
-COPY index.html /usr/local/apache2/htdocs/index.html
+RUN mkdir -p /usr/local/apache2/testeks && sleep 5
 
+COPY index.html /usr/local/apache2/testeks/index.html
