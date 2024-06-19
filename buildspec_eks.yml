@@ -5,10 +5,10 @@ phases:
   install:
     commands:
       - echo Installing app dependencies...
-      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl   
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - echo 'export PATH=$PATH/$HOME/bin' >> ~/.bashrc
       - source ~/.bashrc
       - echo 'Check kubectl version'
       - kubectl version --short --client
@@ -26,13 +26,12 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z8x3f1i4
 
-
-
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --no-cache -t public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image .
+      - docker build --no-cache -t test-iavt12:my-custom-httpd-image .
+      - docker tag test-iavt12:my-custom-httpd-image public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
 
   post_build:
     commands:
@@ -40,5 +39,6 @@ phases:
       - echo Pushing the Docker image...
       - docker push public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
       - echo Deploying the latest image to the cluster
-      - kubectl apply -f eks_cicd/deployment.yaml
-      - kubectl rollout restart deployment cicd-demo-deployment
+      - kubectl set image deployment/cicd-demo-deployment custom-httpd-container=public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image --record
+      - kubectl rollout status deployment/cicd-demo-deployment
+      - kubectl get pods
