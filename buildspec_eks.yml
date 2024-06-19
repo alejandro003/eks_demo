@@ -29,7 +29,6 @@ phases:
       - docker pull public.ecr.aws/z8x3f1i4/test-iavt12:httpd-latest
       - echo Cleaning Docker caches...
       - docker builder prune -a --force
-      - docker image prune -a --force
 
   build:
     commands:
