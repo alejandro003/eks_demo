@@ -25,6 +25,7 @@ phases:
       - kubectl get svc
       - echo Logging in to Amazon ECR...
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z8x3f1i4
+      - docker pull public.ecr.aws/z8x3f1i4/test-iavt12
 
   build:
     commands:
