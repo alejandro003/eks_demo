@@ -32,7 +32,8 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --no-cache -t public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image .
+      - docker build --cache-from public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image -t public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image .
+      - docker tag public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
 
   post_build:
     commands:
@@ -42,3 +43,9 @@ phases:
       - echo Deploying the latest image to the cluster
       - kubectl apply -f eks_cicd/deployment.yaml
       - kubectl rollout restart deployment cicd-demo-deployment
+
+  post_build_cleanup:
+    commands:
+      - echo Cleaning up unused Docker resources...
+      - docker builder prune -a --force
+      - docker image prune -a --force
