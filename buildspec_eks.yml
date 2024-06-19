@@ -33,13 +33,13 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build --cache-from public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image -t public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image .
-      - docker tag public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image:latest public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image:latest
+      - docker tag public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image:latest
+      - docker push public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
       - echo Deploying the latest image to the cluster
       - kubectl apply -f eks_cicd/deployment.yaml
       - kubectl rollout restart deployment cicd-demo-deployment
