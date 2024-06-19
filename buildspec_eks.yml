@@ -29,19 +29,17 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      # Borra la imagen personalizada de httpd del repositorio ECR
-      - aws ecr-public batch-delete-image --region us-east-1 --repository-name test-iavt12 --image-ids imageTag=my-custom-httpd-image
-
       - echo Building the Docker image...
       - docker build --no-cache -t test-iavt12:my-custom-httpd-image .
       - docker tag test-iavt12:my-custom-httpd-image public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
+      - echo Pushing the Docker image...
+      - docker push public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
 
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - docker push public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
       - echo Deploying the latest image to the cluster
       - kubectl set image deployment/cicd-demo-deployment custom-httpd-container=public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image --record
+      - kubectl rollout restart deployment cicd-demo-deployment
       - kubectl rollout status deployment/cicd-demo-deployment
       - kubectl get pods
