@@ -5,11 +5,10 @@ phases:
   install:
     commands:
       - echo Installing app dependencies...
-      - docker system prune -a -f
       - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-      - echo 'export PATH=$PATH/$HOME/bin' >> ~/.bashrc
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
       - source ~/.bashrc
       - echo 'Check kubectl version'
       - kubectl version --short --client
@@ -30,6 +29,9 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      # Borra la imagen personalizada de httpd del repositorio ECR
+      - aws ecr-public batch-delete-image --region us-east-1 --repository-name test-iavt12 --image-ids imageTag=my-custom-httpd-image
+
       - echo Building the Docker image...
       - docker build --no-cache -t test-iavt12:my-custom-httpd-image .
       - docker tag test-iavt12:my-custom-httpd-image public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
