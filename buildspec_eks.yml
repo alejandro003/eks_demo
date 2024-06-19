@@ -26,7 +26,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/w9y8h1s8
       - echo Pulling the Docker image...
-      - docker pull public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
+      - docker pull public.ecr.aws/w9y8h1s8/test-iavt12:httpd-latest
 
   build:
     commands:
