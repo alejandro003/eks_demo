@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: custom-httpd-container
-        image: public.ecr.aws/p9e0r1w2/test-iavt12:my-custom-httpd-image
+        image: public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
         ports:
         - containerPort: 80
 

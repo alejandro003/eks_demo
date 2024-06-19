@@ -24,22 +24,22 @@ phases:
       - echo Checking kubectl access
       - kubectl get svc
       - echo Logging in to Amazon ECR...
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/p9e0r1w2
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/w9y8h1s8
       - echo Pulling the Docker image...
-      - docker pull public.ecr.aws/p9e0r1w2/test-iavt12:my-custom-httpd-image
+      - docker pull public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
 
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --cache-from public.ecr.aws/p9e0r1w2/test-iavt12:my-custom-httpd-image -t my-custom-httpd-image:latest .
-      - docker tag my-custom-httpd-image:latest public.ecr.aws/p9e0r1w2/test-iavt12:my-custom-httpd-image
+      - docker build --cache-from public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image -t my-custom-httpd-image:latest .
+      - docker tag my-custom-httpd-image:latest public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push public.ecr.aws/p9e0r1w2/test-iavt12:my-custom-httpd-image
+      - docker push public.ecr.aws/w9y8h1s8/test-iavt12:my-custom-httpd-image
       - echo Deploying the latest image to the cluster
       - kubectl apply -f eks_cicd/deployment.yaml
       - kubectl rollout restart deployment cicd-demo-deployment
