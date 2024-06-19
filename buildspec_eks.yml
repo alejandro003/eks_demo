@@ -13,7 +13,6 @@ phases:
       - echo 'Check kubectl version'
       - kubectl version --short --client
       - chmod +x eks_cicd/prereqs.sh
-      - chmod +x Dockerfile
       - sh eks_cicd/prereqs.sh
 
   pre_build:
@@ -26,10 +25,6 @@ phases:
       - kubectl get svc
       - echo Logging in to Amazon ECR...
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/z8x3f1i4
-      - echo Pulling the Docker image...
-      - docker pull public.ecr.aws/z8x3f1i4/test-iavt12:httpd-latest
-      - echo Cleaning Docker caches...
-      - docker builder prune -a --force
 
   build:
     commands:
@@ -43,5 +38,5 @@ phases:
       - echo Pushing the Docker image...
       - docker push public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
       - echo Deploying the latest image to the cluster
-      - kubectl apply -f eks_cicd/deployment.yaml
-      - kubectl rollout restart deployment cicd-demo-deployment
+      - kubectl set image deployment/cicd-demo-deployment cicd-demo=public.ecr.aws/z8x3f1i4/test-iavt12:my-custom-httpd-image
+      - kubectl rollout status deployment/cicd-demo-deployment
