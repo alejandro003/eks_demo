@@ -33,7 +33,7 @@ commands:
 - echo Build started on date
 - echo Building the Docker image...
 - docker build --no-cache -t public.ecr.aws/z8x3f1i4/test-iavt12
-.
+
 
 post_build:
 commands:
