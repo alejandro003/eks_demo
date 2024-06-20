@@ -8,7 +8,7 @@ phases:
       - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl   
       - chmod +x ./kubectl
       - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
-      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - echo 'export PATH=$PATH/$HOME/bin' >> ~/.bashrc
       - source ~/.bashrc
       - echo 'Check kubectl version'
       - kubectl version --short --client
@@ -25,14 +25,12 @@ phases:
       - kubectl get svc
       - echo Logging in to Amazon ECR...
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/t5h3y1h3
-      - echo Pulling the Docker image...
 
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --cache-from public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image -t public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image .
-      - docker tag public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image:latest public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image:latest
+      - docker build --no-cache -t public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image .
 
   post_build:
     commands:
