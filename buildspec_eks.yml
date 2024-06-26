@@ -18,25 +18,25 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon EKS...
-      - aws eks --region us-east-1 update-kubeconfig --name demo
+      - aws eks --region us-east-1 update-kubeconfig --name eks_ose_test
       - echo Checking config
       - kubectl config view --minify
       - echo Checking kubectl access
       - kubectl get svc
       - echo Logging in to Amazon ECR...
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/t5h3y1h3
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/k1v6l3y1
 
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --no-cache -t public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image .
+      - docker build --no-cache -t public.ecr.aws/x1g7f4a5/test_iavt12:my-custom-httpd-image .
 
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image
+      - docker push public.ecr.aws/x1g7f4a5/test_iavt12:my-custom-httpd-image
       - echo Deploying the latest image to the cluster
       - kubectl apply -f eks_cicd/deployment.yaml
       - kubectl rollout restart deployment cicd-demo-deployment
