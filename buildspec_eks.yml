@@ -23,7 +23,7 @@ phases:
       - kubectl config view --minify
       - echo Checking kubectl access
       - kubectl get svc
-      - echo Logging in to Amazon ECR...
+      - echo Logging in to Amaazon ECR...
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/k1v6l3y1
 
   build:
