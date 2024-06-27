@@ -1,32 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world-deployment
+  name: cicd-demo-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-world
+      app: cicd-demo
   template:
     metadata:
       labels:
-        app: hello-world
+        app: cicd-demo
     spec:
       containers:
-      - name: hello-world-container
-        image: public.ecr.aws/k1v6l3y1/test-iavt12:nodejs-cust
+      - name: custom-httpd-container
+        image: public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image
         ports:
-        - containerPort: 8080
+        - containerPort: 80
         imagePullPolicy: Always
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-world-service
+  name: cicd-demo-service
 spec:
   type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 8080
   selector:
-    app: hello-world
+    app: cicd-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
