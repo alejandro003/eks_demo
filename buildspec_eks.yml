@@ -18,7 +18,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon EKS...
-      - aws eks --region us-east-1 update-kubeconfig --name eks_ose_test
+      - aws eks --region us-east-1 update-kubeconfig --name eks_ose_demo
       - echo Checking config
       - kubectl config view --minify
       - echo Checking kubectl access
