@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: custom-httpd-container
-        image: public.ecr.aws/t5h3y1h3/test-iavt12:my-custom-httpd-image
+        image: public.ecr.aws/x1g7f4a5/test-iavt12:my-custom-httpd-image
         ports:
         - containerPort: 80
         imagePullPolicy: Always
